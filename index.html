@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>Ricerca Ordini</title>
+<link rel="stylesheet" href="jquery-ui.css">
+<link rel="stylesheet" href="jquery-ui.structure.css">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="style.css">
+<script src="/external/jquery/jquery.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="jquery-ui.js"></script>
+
+<script>
+  $( function() {
+    var dateFormat = "dd/mm/yy",
+      from = $( "#from" )
+        .datepicker({
+          defaultDate: "+1w",
+          changeMonth: true,
+          changeYear: true,
+          numberOfMonths: 1,
+          dateFormat: 'dd/mm/yy'
+        })
+        .on( "change", function() {
+          to.datepicker( "option", "minDate", getDate( this ) );
+        }),
+      to = $( "#to" ).datepicker({
+        defaultDate: "+1w",
+        changeMonth: true,
+        changeYear: true,
+        numberOfMonths: 1,
+        dateFormat: 'dd/mm/yy'
+      })
+      .on( "change", function() {
+        from.datepicker( "option", "maxDate", getDate( this ) );
+      });
+ 
+    function getDate( element ) {
+      var date;
+      try {
+        date = $.datepicker.parseDate( dateFormat, element.value );
+      } catch( error ) {
+        date = null;
+      }
+      return date;
+    }
+  } );
+</script>
+<script>
+  $( function() {
+    $( "input" ).checkboxradio({
+      icon: false
+    });
+  } );
+</script>
+<script>
+function dateToday() {
+
+$(document).ready(function(){
+  $('#from').attr("value", Date());
+});
+$(document).ready(function(){
+  $('#to').attr("value", Date());
+});
+
+}
+</script>
+	<style>
+	body{
+		font-family: "Trebuchet MS", sans-serif;
+		margin: 50px;
+	}
+	.demoHeaders {
+		margin-top: 2em;
+	}
+	#dialog-link {
+		padding: .4em 1em .4em 20px;
+		text-decoration: none;
+		position: relative;
+	}
+	#dialog-link span.ui-icon {
+		margin: 0 5px 0 0;
+		position: absolute;
+		left: .2em;
+		top: 50%;
+		margin-top: -8px;
+	}
+	#icons {
+		margin: 0;
+		padding: 0;
+	}
+	#icons li {
+		margin: 2px;
+		position: relative;
+		padding: 4px 0;
+		cursor: pointer;
+		float: left;
+		list-style: none;
+	}
+	#icons span.ui-icon {
+		float: left;
+		margin: 0 4px;
+	}
+	.fakewindowcontain .ui-widget-overlay {
+		position: absolute;
+	}
+	</style>
+	
+</head>
+
+<body>
+<h1>Ricerca Ordini</h1>
+<form action="index.php" method="post"> 
+<label for="input">Ricerca:</label>
+<input type="text" id="namanyay-search-box" name="input" placeholder="Ricerca Ordini"> 
+<br><br>
+<div id="radioset">
+		<input type="checkbox" id="radio1" name="aperto" checked="checked"><label for="radio1">Aperto</label>
+		<input type="checkbox" id="radio2" name="stampato" checked="checked"><label for="radio2">Stampato</label>
+		<input type="checkbox" id="radio3" name="bloccato" checked="checked"><label for="radio3">Bloccato</label>
+		<input type="checkbox" id="radio4" name="like" checked="checked"><label for="radio4">&#9829</label>
+</div>
+<br><br>
+<label for="selectmenu">Tipo:</label>
+<select id="selectmenu" name="tipo">
+<optgroup label="Con la C">
+	<option>C1</option>
+
+	<option>CR</option>
+</optgroup>
+<optgroup label="Con la F">
+	<option>F1</option>
+	<option>FP</option>
+	<option>FPE</option>
+</optgroup>
+<optgroup label="Altro">
+	<option selected="selected">Tutti i tipi</option>
+</optgroup>
+</select>
+<label for="spinner">ID:</label>
+<input id="spinner" name="id" min="1" > 
+<br><br>
+<label for="numero1">Da Numero:</label>
+<input type="text" id="numero1" name="numero1">
+<label for="numero2">a Numero:</label>
+<input type="text" id="numero2" name="numero2"> 
+<br><br>
+<label for="from">Da Data:</label>
+<input type="text" id="from" name="from">
+<label for="to">a Data:</label>
+<input type="text" id="to" name="to"> 
+<br><br>
+<input type="submit" id="namanyay-search-btn" name="search" value="CERCA">
+
+
+
+</form>
+
+<script src="/external/jquery/jquery.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="jquery-ui.js"></script>
+<script>
+
+$( "#accordion" ).accordion();
+
+
+
+var availableTags = [
+	"ActionScript",
+	"AppleScript",
+	"Asp",
+	"BASIC",
+	"C",
+	"C++",
+	"Clojure",
+	"COBOL",
+	"ColdFusion",
+	"Erlang",
+	"Fortran",
+	"Groovy",
+	"Haskell",
+	"Java",
+	"JavaScript",
+	"Lisp",
+	"Perl",
+	"PHP",
+	"Python",
+	"Ruby",
+	"Scala",
+	"Scheme"
+];
+$( "#autocomplete" ).autocomplete({
+	source: availableTags
+});
+
+
+
+$( "#button" ).button();
+$( "#button-icon" ).button({
+	icon: "ui-icon-gear",
+	showLabel: false
+});
+
+
+
+$( "#radioset" ).buttonset();
+
+
+
+$( "#controlgroup" ).controlgroup();
+
+
+
+$( "#tabs" ).tabs();
+
+
+
+$( "#dialog" ).dialog({
+	autoOpen: false,
+	width: 400,
+	buttons: [
+		{
+			text: "Ok",
+			click: function() {
+				$( this ).dialog( "close" );
+			}
+		},
+		{
+			text: "Cancel",
+			click: function() {
+				$( this ).dialog( "close" );
+			}
+		}
+	]
+});
+
+// Link to open the dialog
+$( "#dialog-link" ).click(function( event ) {
+	$( "#dialog" ).dialog( "open" );
+	event.preventDefault();
+});
+
+
+
+$( "#datepicker" ).datepicker({
+	inline: true
+});
+
+
+
+$( "#slider" ).slider({
+	range: true,
+	values: [ 17, 67 ]
+});
+
+
+
+$( "#progressbar" ).progressbar({
+	value: 20
+});
+
+
+
+$( "#spinner" ).spinner();
+
+
+
+$( "#menu" ).menu();
+
+
+
+$( "#tooltip" ).tooltip();
+
+
+
+$( "#selectmenu" ).selectmenu();
+
+
+// Hover states on the static widgets
+$( "#dialog-link, #icons li" ).hover(
+	function() {
+		$( this ).addClass( "ui-state-hover" );
+	},
+	function() {
+		$( this ).removeClass( "ui-state-hover" );
+	}
+);
+</script>
+</body>
+</html>﻿
