@@ -6,12 +6,119 @@ $conStr = "DRIVER={Microsoft Access Driver (*.mdb)}; DBQ=".
             realpath(DBNAME).";";
 $con->open($conStr);
 
+$input=$_POST['input'];
+$id=$_POST['id'];
+$tipo=$_POST['tipo'];
+$numero1=$_POST['numero1'];
+$numero2=$_POST['numero2'];
+$data1=date('d/m/Y', strtotime($_POST['from']));;
+$data2=date('d/m/Y', strtotime($_POST['to']));;
 
-if (empty($input)) {
-    $sql="SELECT * FROM [Ordini]";
-} else {
-    $$sql="SELECT * FROM [Ordini]";
+//If the data text box are empty the system write "01/01/1970" so, I cancel that
+if ($data1=="01/01/1970") { 
+  
+  $data1 = ""; 
+} 
+
+if ($data2=="01/01/1970") { 
+  
+  $data2 = ""; 
+} 
+
+if ($tipo=="Tutti i tipi") { 
+  
+  $tipo = ""; 
+} 
+
+$optionsSQL = "";
+
+foreach($_POST["options"] as $index => $option) {
+  if ($optionsSQL == "") $optionsSQL = "AND Stato IN ("; //if it's the first detected option, add the IN clause to the string
+  $optionsSQL .= $option.",";
 }
+
+//trim the trailing comma and add the closing bracket of the IN clause instead
+if ($optionsSQL != "") 
+{
+  $optionsSQL = rtrim($optionsSQL, ","); 
+  $optionsSQL .= ")";
+}
+
+$sql="SELECT [Id Ord] AS [ID], [Tipo Ord] AS [Tipo], [N Ord] AS [Numero], [Data Ord] AS [Data], [Ragione Sociale], [Indirizzo], [Stato], [TotImp] AS [IMPORTO TOTALE], [TotIva] AS [IMPORTO IVA] FROM [Ordini] WHERE";
+$whereSql=""; 
+
+if (!empty($input)) { 
+  $whereSql .= " [Indirizzo] LIKE '%$input%' OR [Ragione Sociale] LIKE '%$input%'"; 
+} 
+if (!empty($id)) { 
+  if ($whereSql != "") { 
+    $whereSql .= " AND";  
+  }
+  $whereSql .= " [Id Ord] LIKE '$id'"; 
+} 
+
+if (!empty($tipo)) { 
+  if ($whereSql != "") { 
+    $whereSql .= " AND";  
+  }
+  $whereSql .= " [Tipo Ord] LIKE '$tipo'"; 
+} 
+
+if (!empty($data1)) { 
+  if ($whereSql != "") { 
+    $whereSql .= " AND";  
+  }
+  $whereSql .= " [Data Ord] BETWEEN #$data1# AND #$data2#"; 
+} 
+
+if (!empty($numero1)) { 
+  if ($whereSql != "") { 
+    $whereSql .= " AND";  
+  }
+  $whereSql .= " [N Ord] BETWEEN '$numero1' AND '$numero2'"; 
+} 
+
+if (!empty($option)) { 
+  if ($whereSql != "") { 
+    $whereSql .= " ";  
+  }
+  $whereSql .= $optionsSQL; 
+} 
+
+/*
+if (empty($input)) {
+    $sql="SELECT [Id Ord] AS [ID], [Tipo Ord] AS [Tipo], [N Ord] AS [Numero], [Data Ord] AS [Data], [Ragione Sociale], [Indirizzo], [Stato], [TotImp] AS [IMPORTO TOTALE], [TotIva] AS [IMPORTO IVA] FROM [Ordini] WHERE [Id Ord] LIKE '$id' OR [Tipo Ord] LIKE '$tipo' OR [Data Ord] BETWEEN #$data1# AND #$data2#".$optionsSQL;
+} else {
+    $sql="SELECT [Id Ord] AS [ID], [Tipo Ord] AS [Tipo], [N Ord] AS [Numero], [Data Ord] AS [Data], [Ragione Sociale], [Indirizzo], [Stato], [TotImp] AS [IMPORTO TOTALE], [TotIva] AS [IMPORTO IVA] FROM [Ordini] WHERE [Indirizzo] LIKE '%$input%' OR [Ragione Sociale] LIKE '%$input%' OR [Id Ord] LIKE '$id' OR [Tipo Ord] LIKE '$tipo' OR [Data Ord] BETWEEN #$data1# AND #$data2#".$optionsSQL;
+}
+*/
+
+//Try the variable output
+    echo '<br>';
+    var_dump($sql);
+    echo '<br>';
+    var_dump($input);
+    echo '<br>';
+    var_dump($id);
+    echo '<br>';
+    var_dump($tipo);
+    echo '<br>';
+    var_dump($numero1);
+    echo '<br>';
+    var_dump($numero2);
+    echo '<br>';
+    var_dump($data1);
+    echo '<br>';
+    var_dump($data2);
+    echo '<br>';
+    var_dump($option);
+    echo '<br>';
+
+$sql .= $whereSql; 
+
+//Try the final sql output
+    echo '<br>';
+    var_dump($sql);
 
 $rs = $con->execute($sql);
 
@@ -39,38 +146,47 @@ echo '<link rel="stylesheet" href="css/footable.core.bootstrap.min.css">';
 echo '</head><body>';
 echo '<h1>GESTIONE '.DBTBL.'</h1>';
 // Elenca records -----
-
-if ($rs->num_rows > 0) {
-     echo "<table>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Tipo</th>
-      <th>Numero</th>
-      <th>Data</th>
-      <th>Ragione Sociale</th>
-      <th>Indirizzo</th>
-      <th>Importo Totale</th>
-      <th>Importo Iva</th>
-    </tr>
-  </thead>";
-     // output data of each row
-     while($row = $rs->fetch_assoc()) {
-         echo "<tr><td>" . $row["Id Ord"]. "</td><td>" . $row["Tipo Ord"]. " " . $row["N Ord"]. "</td></tr>";
-     }
-     echo "</table>";
-} else {
-     echo "0 results";
+//echo ("<div class='table-responsive'>");
+echo ("<table class='datatable table tabella_reponsive ui-responsive' summary='Prova dati con MS Access'>");
+echo("<caption>Tabella ".DBTBL."</caption>\n");
+//echo("<thead><tr>");
+//echo("<th data-sort-initial='descending' data-class='expand'>IDD</th>");
+//echo("</tr></thead>");
+for ($i=0;$i<$numFields;$i++){
+    echo("<th scope='col'>");
+    echo $rs->Fields($i)->name;
+    echo("</th>\n");
 }
+echo("</tr></thead>\n");
+echo("<tbody>");
 
-
+$alt = false;
+while (!$rs->EOF)
+{
+    echo("<tr>");
+    for ($i=0;$i<$numFields;$i++){
+      $altClass = $alt ? " class='alt'" : "";
+      if (LINKPK && $i==PKCOL){
+        echo "<td".$altClass."><a href='?id=".$rs->Fields($i)->value
+              ."'>".$rs->Fields($i)->value."</a></td>\n";
+      }
+      else{
+        echo "<td".$altClass.">".$rs->Fields($i)->value."</td>\n";
+      }
+    }
+    echo("</tr>\n");    
+    $rs->MoveNext();
+    $alt = !$alt;
+}
+echo("</tbody>");
+echo("</table>\n");
 echo("</div>");
 echo ("<p>[ <a href='?ins=1'>Inserimento nuovo record</a> ]</p>");
 
 // Modifica record -----
 if (!empty($_GET['id'])){
   $id = intval($_GET['id']);
-  $rs = $con->execute("SELECT [Id Ord] AS [ID], [Tipo Ord] AS [Tipo], [N Ord] AS [Numero], [Data Ord] AS [Data], [Ragione Sociale], [Indirizzo], [TotImp] AS [IMPORTO TOTALE], [TotIva] AS [IMPORTO IVA] FROM ".DBTBL." WHERE ".PKNAME."=".$id);
+  $rs = $con->execute("SELECT [Id Ord] AS [ID], [Tipo Ord] AS [Tipo], [N Ord] AS [Numero], [Data Ord] AS [Data], [Ragione Sociale], [Indirizzo], [Stato], [TotImp] AS [IMPORTO TOTALE], [TotIva] AS [IMPORTO IVA] FROM".DBTBL." WHERE ".PKNAME."=".$id);
   echo ("<form action='modify.php' method='post'>");
   echo ("<fieldset>");
   echo ("<legend>Modifica record</legend>");

@@ -3,14 +3,15 @@
 <head>
 <meta charset="utf-8">
 <title>Ricerca Ordini</title>
-<link rel="stylesheet" href="jquery-ui.css">
-<link rel="stylesheet" href="jquery-ui.structure.css">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="css/jquery-ui.css">
+<link rel="stylesheet" href="css/jquery-ui.structure.css">
+<link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="style.css">
 <script src="/external/jquery/jquery.js"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="anonymous"></script>
+
 <script src="jquery-ui.js"></script>
 
 <script>
@@ -118,17 +119,16 @@ $(document).ready(function(){
 <input type="text" id="namanyay-search-box" name="input" placeholder="Ricerca Ordini"> 
 <br><br>
 <div id="radioset">
-		<input type="checkbox" id="radio1" name="aperto" checked="checked"><label for="radio1">Aperto</label>
-		<input type="checkbox" id="radio2" name="stampato" checked="checked"><label for="radio2">Stampato</label>
-		<input type="checkbox" id="radio3" name="bloccato" checked="checked"><label for="radio3">Bloccato</label>
-		<input type="checkbox" id="radio4" name="like" checked="checked"><label for="radio4">&#9829</label>
+		<input type="checkbox" id="radio1" name="options[]" value="0" checked="checked"><label for="radio1">Inserito</label>
+		<input type="checkbox" id="radio2" name="options[]" value="1" checked="checked"><label for="radio2">Stampato</label>
+		<input type="checkbox" id="radio3" name="options[]" value="2" checked="checked"><label for="radio3">Bloccato</label>
+		<input type="checkbox" id="radio4" name="options[]" value="3" checked="checked"><label for="radio4">&#9829</label>
 </div>
 <br><br>
 <label for="selectmenu">Tipo:</label>
 <select id="selectmenu" name="tipo">
 <optgroup label="Con la C">
 	<option>C1</option>
-
 	<option>CR</option>
 </optgroup>
 <optgroup label="Con la F">
@@ -136,7 +136,7 @@ $(document).ready(function(){
 	<option>FP</option>
 	<option>FPE</option>
 </optgroup>
-<optgroup label="Altro">
+<optgroup label="Tutto">
 	<option selected="selected">Tutti i tipi</option>
 </optgroup>
 </select>
@@ -154,15 +154,12 @@ $(document).ready(function(){
 <input type="text" id="to" name="to"> 
 <br><br>
 <input type="submit" id="namanyay-search-btn" name="search" value="CERCA">
-
-
-
 </form>
 
 <script src="/external/jquery/jquery.js"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script src="jquery-ui.js"></script>
+<script src="js/jquery-ui.js"></script>
 <script>
 
 $( "#accordion" ).accordion();
