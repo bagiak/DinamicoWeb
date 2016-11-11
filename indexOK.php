@@ -44,7 +44,7 @@ if ($optionsSQL != "")
   $optionsSQL .= ")";
 }
 
-$sql="SELECT [Id Ord] AS [ID], [Tipo Ord] AS [Tipo], [N Ord] AS [Numero], [Data Ord] AS [Data], [Ragione Sociale] AS [Cliente], [Indirizzo], [Stato], [TotImp] AS [TOTALE], [TotIva] AS [IVA] FROM [Ordini] WHERE";
+$sql="SELECT [Id Ord] AS [ID], [Tipo Ord] AS [Tipo], [N Ord] AS [Numero], [Data Ord] AS [Data], [Ragione Sociale], [Indirizzo], [Stato], [TotImp] AS [IMPORTO TOTALE], [TotIva] AS [IMPORTO IVA] FROM [Ordini] WHERE";
 $whereSql=""; 
 
 if (!empty($input)) { 
@@ -92,7 +92,7 @@ if (empty($input)) {
     $sql="SELECT [Id Ord] AS [ID], [Tipo Ord] AS [Tipo], [N Ord] AS [Numero], [Data Ord] AS [Data], [Ragione Sociale], [Indirizzo], [Stato], [TotImp] AS [IMPORTO TOTALE], [TotIva] AS [IMPORTO IVA] FROM [Ordini] WHERE [Indirizzo] LIKE '%$input%' OR [Ragione Sociale] LIKE '%$input%' OR [Id Ord] LIKE '$id' OR [Tipo Ord] LIKE '$tipo' OR [Data Ord] BETWEEN #$data1# AND #$data2#".$optionsSQL;
 }
 */
-/*
+
 //Try the variable output
     echo '<br>';
     var_dump($sql);
@@ -114,13 +114,11 @@ if (empty($input)) {
     var_dump($option);
     echo '<br>';
 
-*/
-
 $sql .= $whereSql; 
 
 //Try the final sql output
-//    echo '<br>';
-//    var_dump($sql);
+    echo '<br>';
+    var_dump($sql);
 
 $rs = $con->execute($sql);
 
@@ -140,132 +138,105 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 <meta http-equiv="Content-Type" 
      content="text/html; charset=utf-8" />
 <title>Gestione degli '.DBTBL.'</title>
-<link rel="stylesheet" href="css/styles.css">
-<link href="css/bootstrap.css" rel="stylesheet">
-<link href="external/responsive/css/responsive.bootstrap.css" rel="stylesheet">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.2/css/bootstrap.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap4.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-<script src="external/bootstrap/js/bootstrap.js"></script>
-<script src="external/bootstrap/js/npm.js"></script>
-<script src="//code.jquery.com/jquery-1.12.3.js"></script>
-<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap4.min.js"></script>
-<script src="external/responsive/js/dataTables.responsive.js"></script>
-<script src="external/responsive/js/responsive.bootstrap.js"></script>
-<script src="external/responsive/js/responsive.jqueryui.js"></script>
-<style type="text/css">
-      body {
-        padding-top: 0px;
-        margin-top: 0px;
-        padding-bottom: 60px;
-        font-size: 14px;
-      }
-
-      /* Custom container */
-      .container {
-        margin-top: 0;
-        width 70%;
-      }
-      .container > hr {
-        margin: 0;
-      }
-
-      /* Main marketing message and sign up button */
-      .jumbotron {
-        margin: 60px 0;
-        text-align: center;
-        background-color: #ffffff;
-        border-style: solid;
-        border-color: #3d3d3d #3d3d3d;
-        border-width: 2px;
-
-      }
-      .jumbotron h1 {
-        font-size: 100px;
-        line-height: 1;
-      }
-      .jumbotron .lead {
-        font-size: 24px;
-        line-height: 1.25;
-      }
-      .jumbotron .btn {
-        font-size: 21px;
-        padding: 14px 24px;
-      }
-
-      /* Supporting marketing content */
-      .marketing {
-        margin: 60px 0;
-      }
-      .marketing p + h4 {
-        margin-top: 28px;
-      }
-    </style>
-';
-echo("<script>
+<link href="css/styles.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.css"/>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>
+<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="css/footable.bootstrap.css">
+<link rel="stylesheet" href="css/footable.bootstrap.min.css">
+<link rel="stylesheet" href="css/footable.core.bootstrap.min.css">
+<script>
 $(document).ready(function(){
-    $('#mydatatable').DataTable();
+    $("#myTable").DataTable();
 });
-</script>");
-echo '</head><body>
-<div class="container">
-';
+</script>
+</head><body>
+<h1>GESTIONE '.DBTBL.'</h1>';
 // Elenca records -----
-echo '<div class="jumbotron">
-        <h2>Ricerca ordini</h2>';
-echo '<table class="table table-striped table-bordered" id="mydatatable" cellspacing="0" width="100%">';
-echo '<caption>Tabella degli '.DBTBL.'</caption>';
-echo("<thead><tr>");
+//echo ("<div class='table-responsive'>");
+echo ("<table class='datatable table tabella_reponsive ui-responsive' id='myTable' summary='Prova dati con MS Access'>");
+echo("<caption>Tabella ".DBTBL."</caption>\n");
+//echo("<thead><tr>");
+//echo("<th data-sort-initial='descending' data-class='expand'>IDD</th>");
+//echo("</tr></thead>");
 for ($i=0;$i<$numFields;$i++){
-    echo("<th>");
+    echo("<th scope='col'>");
     echo $rs->Fields($i)->name;
-    echo("</th>");
+    echo("</th>\n");
 }
-echo("</tr></thead>");
-
-echo("<tfoot><tr>");
-for ($i=0;$i<$numFields;$i++){
-    echo("<th>");
-    echo $rs->Fields($i)->name;
-    echo("</th>");
-}
-echo("</tr></tfoot>");
-
+echo("</tr></thead>\n");
 echo("<tbody>");
+
+$alt = false;
 while (!$rs->EOF)
 {
     echo("<tr>");
-    for ($i=0;$i<$numFields;$i++){   
+    for ($i=0;$i<$numFields;$i++){
+      $altClass = $alt ? " class='alt'" : "";
       if (LINKPK && $i==PKCOL){
-        echo("<td>");
-        echo "<a href='?id=".$rs->Fields($i)->value
-              ."'>".$rs->Fields($i)->value."</a>";
-        //echo $rs->Fields($i)->value;
-        echo("</td>");
-        }
-        else{
-          echo("<td>");
-           echo $rs->Fields($i)->value;
-          echo("</td>");
+        echo "<td".$altClass."><a href='?id=".$rs->Fields($i)->value
+              ."'>".$rs->Fields($i)->value."</a></td>\n";
+      }
+      else{
+        echo "<td".$altClass.">".$rs->Fields($i)->value."</td>\n";
       }
     }
     echo("</tr>\n");    
     $rs->MoveNext();
+    $alt = !$alt;
 }
 echo("</tbody>");
-echo("</table>");
+echo("</table>\n");
 echo("</div>");
+
 echo ("<p>[ <a href='?ins=1'>Inserimento nuovo record</a> ]</p>");
-echo '</div>
-      <hr>
-      <div class="footer">
-        <p>&copy; Dinamico Web 2016</p>
-      </div>
-    </div>
-';
-echo("</div>");
-echo("</container>");
+
+// Modifica record -----
+if (!empty($_GET['id'])){
+  $id = intval($_GET['id']);
+  $rs = $con->execute("SELECT [Id Ord] AS [ID], [Tipo Ord] AS [Tipo], [N Ord] AS [Numero], [Data Ord] AS [Data], [Ragione Sociale], [Indirizzo], [Stato], [TotImp] AS [IMPORTO TOTALE], [TotIva] AS [IMPORTO IVA] FROM".DBTBL." WHERE ".PKNAME."=".$id);
+  echo ("<form action='modify.php' method='post'>");
+  echo ("<fieldset>");
+  echo ("<legend>Modifica record</legend>");
+  for ($i=0;$i<$numFields;$i++){
+    if (LINKPK && $i==PKCOL){
+      echo ("<label for='".$rs->Fields($i)->name."'>"
+             .$rs->Fields($i)->name."</label>");
+      echo ("<input type='text' readonly='readonly' name='"
+             .$rs->Fields($i)->name."' value=\""
+             .$rs->Fields($i)->value."\" /><br />\n");      
+    }
+    else {
+      echo ("<label for='".$rs->Fields($i)->name."'>"
+             .$rs->Fields($i)->name."</label>");
+      echo ("<input type='text' name='".$rs->Fields($i)->name."' value=\""
+             .$rs->Fields($i)->value."\" /><br />\n");
+    }
+  }
+  echo ("<button type='submit' name='azione' value='modifica'>Modifica</button>");
+  echo ("<button class='affiancato' type='submit' 
+        name='azione' value='cancella'>Cancella</button>");
+  echo ("</fieldset></form>");
+}
+
+// Inserimento record -----
+elseif (!empty($_GET['ins'])){
+  echo ("<form action='modify.php' method='post'>");
+  echo ("<fieldset>");
+  echo ("<legend>Inserimento record</legend>");
+  for ($i=0;$i<$numFields;$i++){
+    if ($i!=PKCOL){
+      echo ("<label for='".$rs->Fields($i)->name."'>"
+             .$rs->Fields($i)->name."</label>");
+      echo ("<input type='text' name='".$rs->Fields($i)->name."' /><br />\n");
+    }
+  }
+  echo ("<button type='submit' name='azione' value='inserisci'>Inserisci</button>");
+  echo ("<br />");
+  echo ("</fieldset></form>");
+  echo '<script src="js/footable.js"></script>';
+  echo '<script src="js/footable.min.js"></script>';
+}
 echo '</body>';
 echo '</html>';
 $rs->Close();

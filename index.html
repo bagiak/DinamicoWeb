@@ -2,7 +2,9 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<title>Ricerca Ordini</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dinamico Web &#9729; | Sempre a portata di mano.</title>
 <link rel="stylesheet" href="css/jquery-ui.css">
 <link rel="stylesheet" href="css/jquery-ui.structure.css">
 <link rel="stylesheet" href="css/style.css">
@@ -59,14 +61,12 @@
 </script>
 <script>
 function dateToday() {
-
 $(document).ready(function(){
   $('#from').attr("value", Date());
 });
 $(document).ready(function(){
   $('#to').attr("value", Date());
 });
-
 }
 </script>
 	<style>
@@ -161,11 +161,7 @@ $(document).ready(function(){
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="js/jquery-ui.js"></script>
 <script>
-
 $( "#accordion" ).accordion();
-
-
-
 var availableTags = [
 	"ActionScript",
 	"AppleScript",
@@ -193,29 +189,14 @@ var availableTags = [
 $( "#autocomplete" ).autocomplete({
 	source: availableTags
 });
-
-
-
 $( "#button" ).button();
 $( "#button-icon" ).button({
 	icon: "ui-icon-gear",
 	showLabel: false
 });
-
-
-
 $( "#radioset" ).buttonset();
-
-
-
 $( "#controlgroup" ).controlgroup();
-
-
-
 $( "#tabs" ).tabs();
-
-
-
 $( "#dialog" ).dialog({
 	autoOpen: false,
 	width: 400,
@@ -234,49 +215,25 @@ $( "#dialog" ).dialog({
 		}
 	]
 });
-
 // Link to open the dialog
 $( "#dialog-link" ).click(function( event ) {
 	$( "#dialog" ).dialog( "open" );
 	event.preventDefault();
 });
-
-
-
 $( "#datepicker" ).datepicker({
 	inline: true
 });
-
-
-
 $( "#slider" ).slider({
 	range: true,
 	values: [ 17, 67 ]
 });
-
-
-
 $( "#progressbar" ).progressbar({
 	value: 20
 });
-
-
-
 $( "#spinner" ).spinner();
-
-
-
 $( "#menu" ).menu();
-
-
-
 $( "#tooltip" ).tooltip();
-
-
-
 $( "#selectmenu" ).selectmenu();
-
-
 // Hover states on the static widgets
 $( "#dialog-link, #icons li" ).hover(
 	function() {
